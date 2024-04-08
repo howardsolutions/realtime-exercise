@@ -52,5 +52,7 @@ In 2015 we got HTTP/2 ratified as the official new standard of HTTP. It added a 
 
 👉 This is `true realtime` because it <strong>allows both sides to engage in realtime communication.</strong>
 
-👉 With Polling: We have to create too many requests and established new connection for each request
-👉 With Http/2 it's just realtime on 1 direction (from server), the client just read the responses backfrom the server in one long http request.
+👉 With Polling: We have to create too many requests and established new connection for each request <br />
+👉 With Http/2 it's just realtime on 1 direction (from server), the client just read the responses back from the server in one long http request.
+
+👉👉 That's how sockets work: they make a normal TCP/IP connection but after that connection is established, it requests an `upgrade` to a socket connection

@@ -64,6 +64,7 @@ server.on("request", async (req, res) => {
     });
   } else if (method === "POST") {
     // get data out of post
+    // normally here is what `bodyParser` middleware doing behind the scene
     const buffers = [];
 
     for await (const chunk of req) {
@@ -78,6 +79,7 @@ server.on("request", async (req, res) => {
       time: Date.now(),
     });
 
+    // all done with the request
     res.end();
 
     connections.forEach((stream) =>
