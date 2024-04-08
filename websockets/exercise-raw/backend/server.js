@@ -24,11 +24,26 @@ const server = http.createServer((request, response) => {
   });
 });
 
-/*
- *
- * your code goes here
- *
- */
+server.on("upgrade", (req, socket) => {
+  if (req.headers["upgrade"] !== "websocket") {
+    socket.end("HTTP/1.1 400 Bad Request");
+    return;
+  }
+
+  const acceptKey = req.headers["sec-websocket-key"];
+  const acceptValue = generateAcceptValue(acceptKey);
+
+  const headers = [
+    "HTTP/1.1 101 Web Socket Protocol Handshake",
+    "Upgrade: WebSocket",
+    "Connection: Upgrade",
+    `Sec-WebSocket-Accept: ${acceptValue}`,
+    `Sec-WebSocket-Protocol: json`,
+    "\r\n", // (create break line) say to the browser here is the end of the headers, after that everything is DATA
+  ];
+
+  socket.write(headers.join("\r\n"));
+});
 
 const port = process.env.PORT || 8080;
 server.listen(port, () =>
