@@ -44,9 +44,11 @@ server.on("stream", (stream, headers) => {
 
     // write the first response
     stream.write(JSON.stringify({ msg: getMsgs() }));
+    connections.push(stream);
 
     stream.on("close", () => {
       console.log("Disconnected " + stream.id);
+      connections = connections.filter((s) => s.id !== stream.id);
     });
   }
 });
@@ -63,17 +65,24 @@ server.on("request", async (req, res) => {
   } else if (method === "POST") {
     // get data out of post
     const buffers = [];
+
     for await (const chunk of req) {
       buffers.push(chunk);
     }
     const data = Buffer.concat(buffers).toString();
     const { user, text } = JSON.parse(data);
 
-    /*
-     *
-     * some code goes here
-     *
-     */
+    msg.push({
+      user,
+      text,
+      time: Date.now(),
+    });
+
+    res.end();
+
+    connections.forEach((stream) =>
+      stream.write(JSON.stringify({ msg: getMsgs() }))
+    );
   }
 });
 
