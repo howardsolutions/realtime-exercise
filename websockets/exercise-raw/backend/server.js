@@ -7,6 +7,7 @@ import objToResponse from "./obj-to-response.js";
 import generateAcceptValue from "./generate-accept-value.js";
 import parseMessage from "./parse-message.js";
 
+// init state
 let connections = [];
 const msg = new nanobuffer(50);
 const getMsgs = () => Array.from(msg).reverse();
@@ -45,11 +46,36 @@ server.on("upgrade", (req, socket) => {
   // establish the connection header
   socket.write(headers.join("\r\n"));
 
-  // write data to the open connection
+  // write first response data to the connected socket (connected user)
   socket.write(objToResponse({ msg: getMsgs() }));
 
-  // receive information from the client
-  socket.on("data", (buffer) => {});
+  connections.push(socket);
+
+  // receive new chat message from the client
+  socket.on("data", (buffer) => {
+    const message = parseMessage(buffer);
+
+    // if we received msg from client
+    if (message) {
+      msg.push({
+        user: message.user,
+        text: message.text,
+        time: Date.now(),
+      });
+
+      // broadcast the new msg to all the socket
+      connections.forEach((sock) =>
+        sock.write(objToResponse({ msg: getMsgs() }))
+      );
+    } else if (message === null) {
+      socket.end();
+      // go down to the line below, and remove the socket out of current connections list
+    }
+  });
+
+  socket.on("end", () => {
+    connections.forEach((s) => s !== socket);
+  });
 });
 
 const port = process.env.PORT || 8080;

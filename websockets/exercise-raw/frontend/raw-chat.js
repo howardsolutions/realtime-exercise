@@ -10,6 +10,7 @@ chat.addEventListener("submit", function (e) {
   chat.elements.text.value = "";
 });
 
+// establish websocket on the FE
 const ws = new WebSocket("ws://localhost:8080", ["json"]);
 
 ws.addEventListener("open", () => {
@@ -21,6 +22,11 @@ ws.addEventListener("message", (event) => {
   const data = JSON.parse(event.data);
   allChat = data.msg;
   render();
+});
+
+ws.addEventListener("close", () => {
+  console.log("Disconnected");
+  presence.innerText = "🔴";
 });
 
 async function postNewMsg(user, text) {
