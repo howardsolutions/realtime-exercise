@@ -42,7 +42,14 @@ server.on("upgrade", (req, socket) => {
     "\r\n", // (create break line) say to the browser here is the end of the headers, after that everything is DATA
   ];
 
+  // establish the connection header
   socket.write(headers.join("\r\n"));
+
+  // write data to the open connection
+  socket.write(objToResponse({ msg: getMsgs() }));
+
+  // receive information from the client
+  socket.on("data", (buffer) => {});
 });
 
 const port = process.env.PORT || 8080;

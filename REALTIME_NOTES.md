@@ -43,3 +43,14 @@ In 2015 we got HTTP/2 ratified as the official new standard of HTTP. It added a 
 👉 Better compression strategies. Without getting into too much details, HTTP 2 allows for compression to happen at a finer grain details and thus allows better compression
 
 👉 Request prioritization. You can say some things are lower priority (like maybe images) and others are higher (like stylesheets.)
+
+# WebSockets By Hand
+
+👉 WebSockets are a primitive built into both browsers and backends alike that allow to us to have a long-running connection that allows clients to push data to servers and servers to push data to clients
+
+👉 As opposed to long-polling where we had a client that requesting and posting data to and from a server over many small connections, a WebSocket is one long-running connection where servers can push data to clients and vice versa
+
+👉 This is `true realtime` because it <strong>allows both sides to engage in realtime communication.</strong>
+
+👉 With Polling: We have to create too many requests and established new connection for each request
+👉 With Http/2 it's just realtime on 1 direction (from server), the client just read the responses backfrom the server in one long http request.
