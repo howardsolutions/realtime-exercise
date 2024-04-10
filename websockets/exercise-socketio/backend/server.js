@@ -23,6 +23,19 @@ const io = new Server();
 
 io.on("connection", (socket) => {
   console.log("Connected " + socket.id);
+  // send msg to client
+  socket.emit("msg:get", { msg: getMsgs() });
+
+  socket.on("msg:post", (data) => {
+    msg.push({
+      text: data.text,
+      user: data.user,
+      time: Date.now(),
+    });
+
+    // broadcast new message to all the sockets in connections
+    io.emit("msg:get", { msg: getMsgs() });
+  });
 
   socket.on("disconnect", () => {
     console.log(`disconnected: ${socket.id}`);
