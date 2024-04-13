@@ -1,4 +1,4 @@
-# The Chat App
+# The Chat App - Real Time Notes
 
 ## Overview
 
@@ -34,6 +34,8 @@ when user switch to another tab, for a really long time, the client application 
 
 👉 So how do we balance a good user experience (recovering as fast as possible) with technical needs (allowing your servers space to recover)? Back off strategies!
 
+<hr />
+
 # HTTP/2
 
 In 2015 we got HTTP/2 ratified as the official new standard of HTTP. It added a bunch of new features, here a few highlights
@@ -43,6 +45,8 @@ In 2015 we got HTTP/2 ratified as the official new standard of HTTP. It added a 
 👉 Better compression strategies. Without getting into too much details, HTTP 2 allows for compression to happen at a finer grain details and thus allows better compression
 
 👉 Request prioritization. You can say some things are lower priority (like maybe images) and others are higher (like stylesheets.)
+
+<hr />
 
 # WebSockets By Hand
 
